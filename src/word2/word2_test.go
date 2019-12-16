@@ -39,4 +39,52 @@ for _, test := range tests {
 
 //!-test
 
+//!+bench
+func BenchmarkIsPalindrome(b *testing.B) {
+   for i := 0; i < b.N; i++ {
+      IsPalindrome("A man, a plan, a canal: Panama")
+   }
+}
+//!-bench
+
+//!+example
+func ExampleIsPalindrome() {
+   fmt.Println(IsPalindrome("A man, a plan, a canal: Panama"))
+   fmt.Println(IsPalindrome("palindrome"))
+}
+//!-example
+
+/*
+//!+random
+import "math/rand"
+//!-random
+*/
+
+//!+random
+// randomPalindrome returns a palindrome whose length and contents
+// are derived from the pseudo-random number generator rng.
+func randomPalindrome(rng *rand.Rand) string {
+   n := rng.Intn(25) // random length upto 24
+   runes := make([]rune, n)
+   for i := 0; i < (n+1)/2; i++ {
+      r:= rune(rng.Intn(0x1000)) //random rune upto '\u0999'
+      runes[i] = r
+      runes[n-1-i] = r
+   }
+   return string(runes)
+}
+
+func TestRandomPalindromes(t *testing.T) {
+   // Initialize a pseudo-random number generator.
+   seed := time.Now().UTC().UnixNano()
+   t.Logf("Ramdom seed: %d", seed)
+   rng := rand.New(rand.NewSource(seed))
+
+   for i := 0; i < 1000; i++ {
+      p := randomPalindrome(rng)
+      if !IsPalindrome(p) {
+         t.Errorf("IsPalindrome(%q) = false", p)
+      }
+   }
+}
 
