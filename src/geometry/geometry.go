@@ -4,7 +4,7 @@ package geometry
 
 import "math"
 
-type Point struct{ X, Y, float64 }
+type Point struct{ X, Y float64 }
 
 // traditional function 
 func Distance(p, q, Point) float64 {
