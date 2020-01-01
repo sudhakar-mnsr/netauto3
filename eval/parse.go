@@ -90,3 +90,51 @@ func parseUnary(lex *lexer) Expr {
 	}
 	return parsePrimary(lex)
 }
+
+func parsePrimary(lex *lexer) Expr {
+	switch lex.token {
+	case scanner.Ident:
+		id := lex.text()
+		lex.next() // consume Ident
+		if lex.token != '(' {
+			return Var(id)
+		}
+		lex.next() // consume '('
+		var args []Expr
+		if lex.token != ')' {
+			for {
+				args = append(args, parseExpr(lex))
+				if lex.token != ',' {
+					break
+				}
+				lex.next() // consume ','
+			}
+			if lex.token != ')' {
+				msg := fmt.Sprintf("got %q, want ')'", lex.token)
+				panic(lexPanic(msg))
+			}
+		}
+		lex.next() // consume ')'
+		return call{id, args}
+
+	case scanner.Int, scanner.Float:
+		f, err := strconv.ParseFloat(lex.text(), 64)
+		if err != nil {
+			panic(lexPanic(err.Error()))
+		}
+		lex.next() // consume number
+		return literal(f)
+
+	case '(':
+		lex.next() // consume '('
+		e := parseExpr(lex)
+		if lex.token != ')' {
+			msg := fmt.Sprintf("got %s, want ')'", lex.describe())
+			panic(lexPanic(msg))
+		}
+		lex.next() // consume ')'
+		return e
+	}
+	msg := fmt.Sprintf("unexpected %s", lex.describe())
+	panic(lexPanic(msg))
+}
