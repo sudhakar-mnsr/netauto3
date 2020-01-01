@@ -30,4 +30,37 @@ func (lex *lexer) describe() string {
    return fmt.Sprintf("%q", rune(lex.token))
 }
 
+func precedence(op rune) int {
+	switch op {
+	case '*', '/':
+		return 2
+	case '+', '-':
+		return 1
+	}
+	return 0
+}
+
+func Parse(input string) (_ Expr, err error) {
+	defer func() {
+		switch x := recover().(type) {
+		case nil:
+			// no panic
+		case lexPanic:
+			err = fmt.Errorf("%s", x)
+		default:
+			// unexpected panic: resume state of panic.
+			panic(x)
+		}
+	}()
+	lex := new(lexer)
+	lex.scan.Init(strings.NewReader(input))
+	lex.scan.Mode = scanner.ScanIdents | scanner.ScanInts | scanner.ScanFloats
+	lex.next() // initial lookahead
+	e := parseExpr(lex)
+	if lex.token != scanner.EOF {
+		return nil, fmt.Errorf("unexpected %s", lex.describe())
+	}
+	return e, nil
+}
+
  
