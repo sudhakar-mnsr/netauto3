@@ -80,3 +80,13 @@ func parseBinary(lex *lexer, prec1 int) Expr {
 	}
 	return lhs
 } 
+
+// unary = '+' expr | primary
+func parseUnary(lex *lexer) Expr {
+	if lex.token == '+' || lex.token == '-' {
+		op := lex.token
+		lex.next() // consume '+' or '-'
+		return unary{op, parseUnary(lex)}
+	}
+	return parsePrimary(lex)
+}
