@@ -30,3 +30,11 @@ func (g gallon) quart() quart {
 func (g *gallon) double() {
    *g = gallon(*g * 2)
 }
+
+func main() {
+   gal := gallon(5)
+   gal.double()
+   fmt.Printf("%.2f gallons = %.2f quarts\n", gal, gal.quart())
+   ozs := gal.quart().cup().ounce()
+   fmt.Printf("%.2f gallons = %.2f ounces\n", gal, ozs)
+}
