@@ -47,3 +47,10 @@ func shapeInfo(s shape) string {
    return fmt.Sprintf("Area = %.2f, Perim = %.2f, s.area(), s.perim())
 }
 
+func main() {
+   r := &rect{"Square", 4.0, 4.0}
+   fmt.Println(r, "=>", shapeInfo(r))
+
+   t := &triangle{"Right Triangle", 1, 2, 3)
+   fmt.Println(t, "=>", shapeInfo(t))
+}  
