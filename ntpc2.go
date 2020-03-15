@@ -63,3 +63,16 @@ func main() {
       fmt.Printf("failed to send request: %v\n", err)
       os.Exit(1)
    }
+
+   // block to receive server response
+   read, err := conn.Read(rsp)
+   if err != nil {
+      fmt.Printf("failed to receive response: %v\n", err)
+      os.Exit(1)
+   }
+   // ensure we read 48 bytes back (NTP protocol spec)
+   if read != 48 {
+      fmt.Println("did not get all expected bytes from server")
+      os.Exit(1)
+   }
+
