@@ -35,3 +35,35 @@ func main {
       fmt.Printf("failed to connec: %v\n", err)
       os.Exit(1)
    }
+
+   defer func() {
+      if err := conn.Close(); err != nil {
+         fmt.Println("failed while closing connection:", err)
+      }
+   }()
+   fmt.Printf("time from (udp) %s\n", conn.RemoteAddr())
+
+   // Once connection is established, the code pattern
+   // is the same as in the other impl.
+
+   // send time request
+   if _, err = conn.Write(req); err != nil {
+      fmt.Printf("failed to send request: %v\n", err)
+      os.Exit(1)
+   }
+
+   read, err := conn.Read(rsp)
+   if err != nil {
+      fmt.Printf("failed to recieve response: %v\n", err)
+      os.Exit(1)
+   }
+   if read != 48 {
+      fmt.Println("did not get all expected bytes from server")
+      os.Exit(1)
+   }
+
+   // ensure we read 48 bytes back (NTP protocol spec)
+   if read != 48 {
+      fmt.Println("did not get all expected bytes from server")
+      os.Exit(1)
+   } 
