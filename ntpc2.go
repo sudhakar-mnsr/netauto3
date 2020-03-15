@@ -15,7 +15,7 @@ import (
 func main() {
    var path string
    flag.StringVar(&path, "e", "/tmp/time.sock", "NTP client sock endpoint")
-   flage.Parse()
+   flag.Parse()
 
    // req data packet is 48 byte long value
    // that is used for sending time request.
