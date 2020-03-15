@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func main {
+func main() {
    var host string
    flag.StringVar(&host, "e", "us.pool.ntp.org:123", "NTP host")
    flag.Parse() 
