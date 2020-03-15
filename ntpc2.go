@@ -42,3 +42,14 @@ func main() {
    laddr := &net.UnixAddr{Name: fmt.Sprintf("%s-client", raddr.Name), Net: "unixgram"} 
 
    // setup a connection (net.UnixConn) using net.DialUnix
+   conn, err := net.DialUnix("unixgram", laddr, raddr)
+   if err != nil {
+      fmt.Printf("failed to connect: %v\n", err)
+      os.Exit(1)
+   }
+   defer func() {
+      if err := conn.Close(); err != nil {
+         fmt.Println("failed while closing connection:", err)
+      }
+   }()
+   
