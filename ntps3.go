@@ -70,3 +70,21 @@ func main() {
       go handleRequest(conn, raddr)
    }
 }
+
+func handleRequest(conn net.PacketConn, addr net.Addr) {
+   secs, fracs := getNTPSeconds(time.Now())
+  
+   // response packet is filled with seconds and
+   // fractional sec values using Big-Endian
+   rsp := make([]byte, 48)
+   // Write seconds (as uint32) in buffer at [40:43]
+   binary.BigEndian.PutUint32(rsp[40:], uint32(secs))
+   // write seconds (as uint32) in buffer at [44:47]
+   binary.BigEndian.PutUint32(rsp[44:], uint32(fracs))
+
+   // send data
+   if _, err := conn.WriteTo(rsp, addr); err != nil {
+      fmt.Println("err sending data:", err)
+      os.Exit(1)
+   }
+}
