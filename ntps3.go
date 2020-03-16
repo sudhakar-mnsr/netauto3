@@ -90,7 +90,7 @@ func handleRequest(conn net.PacketConn, addr net.Addr) {
 }
 
 // getNTPSecs decompose current time as NTP seconds
-func getNTPseconds(t time.Time) (int64, int64) {
+func getNTPSeconds(t time.Time) (int64, int64) {
    // convert time to total # of secs since 1970
    // add NTP epoch offsets as total #secs between 1900-1970
    secs := t.Unix() + int64(getNTPOffset())
