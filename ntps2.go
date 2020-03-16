@@ -15,7 +15,7 @@ import (
 // The server returns the number of seconds since 1900 upto the
 // current time.
 
-func main) {
+func main() {
    var path string
    flag.StringVar(&path, "e", "/tmp/time.sock", "NTP server socket endpoint")
    flag.Parse()
