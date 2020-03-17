@@ -28,6 +28,10 @@ func main() {
    // that is used for sending time request.
    req := make([]byte, 48)
 
+   // req is initialized with 0x1B or 0001 1011 which is
+   // a request setting for time server.
+   req[0] = 0x1B
+
    // rsp byte slice used to receive server response
    rsp := make([]byte, 48)
 
