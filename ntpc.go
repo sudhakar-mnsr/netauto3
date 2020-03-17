@@ -57,10 +57,6 @@ func main() {
       fmt.Printf("failed to recieve response: %v\n", err)
       os.Exit(1)
    }
-   if read != 48 {
-      fmt.Println("did not get all expected bytes from server")
-      os.Exit(1)
-   }
 
    // ensure we read 48 bytes back (NTP protocol spec)
    if read != 48 {
