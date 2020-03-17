@@ -35,7 +35,7 @@ func main() {
    // we will need this a bit later to configure the local address
    // when the program is using "unixgram"
 
-   dailer := net.Dialer{}
+   dialer := net.Dialer{}
 
    // IMPORTANT: when network is "unixgram", the local address
    // must be created and set explicitly (see ntpc2.go).
